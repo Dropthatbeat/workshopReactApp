@@ -164,7 +164,7 @@ function App() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search workshop codes..."
-            style={inputStyle}
+            style={androidInputStyle}
           />
         )
       case "filter":
@@ -175,21 +175,21 @@ function App() {
               value={hero}
               onChange={e => setHero(e.target.value)}
               placeholder="Hero (e.g. reinhardt)"
-              style={inputStyle}
+              style={androidInputStyle}
             />
             <input
               type="text"
               value={map}
               onChange={e => setMap(e.target.value)}
               placeholder="Map (e.g. eichenwalde)"
-              style={inputStyle}
+              style={androidInputStyle}
             />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Query (optional)"
-              style={inputStyle}
+              style={androidInputStyle}
             />
           </>
         )
@@ -200,7 +200,7 @@ function App() {
             value={username}
             onChange={e => setUsername(e.target.value)}
             placeholder="Username"
-            style={inputStyle}
+            style={androidInputStyle}
           />
         )
       case "code":
@@ -210,7 +210,7 @@ function App() {
             value={code}
             onChange={e => setCode(e.target.value)}
             placeholder="Workshop Code"
-            style={inputStyle}
+            style={androidInputStyle}
           />
         )
       case "wiki":
@@ -220,7 +220,7 @@ function App() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Wiki search..."
-            style={inputStyle}
+            style={androidInputStyle}
           />
         )
       default:
@@ -232,24 +232,32 @@ function App() {
   const renderCards = (data) => {
     if (!Array.isArray(data)) return null
     return (
-      <div style={{display: 'flex', flexWrap: 'wrap', gap: '1.5em', justifyContent: 'center'}}>
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '1em',
+        justifyContent: 'center'
+      }}>
         {data.map((item, idx) => (
           <div key={item.code || item.id || idx} style={{
-            background: '#222e',
+            background: '#23272f',
             color: '#fff',
-            borderRadius: '10px',
-            padding: '1em',
-            width: '320px',
-            boxShadow: '0 2px 8px #0006',
+            borderRadius: '18px',
+            padding: '1.2em',
+            width: '96vw',
+            maxWidth: 370,
+            boxShadow: '0 4px 16px #0004',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginBottom: '1em',
+            border: '1.5px solid #333'
           }}>
             <a
               href={item.code ? `https://workshop.codes/${item.nice_url ? item.nice_url : item.code}` : undefined}
               target="_blank"
               rel="noopener noreferrer"
-              style={{textDecoration: 'none', color: 'inherit'}}
+              style={{textDecoration: 'none', color: 'inherit', width: '100%'}}
             >
               {item.thumbnail &&
                 <img
@@ -259,32 +267,37 @@ function App() {
                     width: '100%',
                     height: '180px',
                     objectFit: 'cover',
-                    borderRadius: '6px',
-                    marginBottom: '0.5em',
+                    borderRadius: '12px',
+                    marginBottom: '0.7em',
                     background: '#111'
                   }}
                   onError={e => { e.target.style.display = 'none'; }}
                 />
               }
-              <h3 style={{margin: '0.5em 0 0.2em 0', fontSize: '1.1em'}}>{item.title || item.name || item.term || item.code}</h3>
+              <h3 style={{
+                margin: '0.5em 0 0.2em 0',
+                fontSize: '1.18em',
+                fontWeight: 600,
+                letterSpacing: 0.2
+              }}>{item.title || item.name || item.term || item.code}</h3>
               {item.user && (
-                <div style={{fontSize: '0.95em', color: '#aaa', marginBottom: '0.5em'}}>
+                <div style={{fontSize: '1em', color: '#8de1c5', marginBottom: '0.5em'}}>
                   by {item.user?.username}
                   {item.user?.verified && <span title="Verified" style={{color: '#4fd1c5', marginLeft: '0.3em'}}>✔️</span>}
                 </div>
               )}
               {item.code && (
-                <div style={{fontSize: '0.9em', color: '#ccc', marginBottom: '0.5em'}}>
+                <div style={{fontSize: '1em', color: '#ccc', marginBottom: '0.5em'}}>
                   <b>Code:</b> {item.code}
                 </div>
               )}
               {item.categories && (
-                <div style={{fontSize: '0.85em', color: '#bbb'}}>
+                <div style={{fontSize: '0.95em', color: '#bbb'}}>
                   {item.categories.join(', ')}
                 </div>
               )}
               {item.definition && (
-                <div style={{fontSize: '0.95em', color: '#bbb', marginTop: '0.5em'}}>
+                <div style={{fontSize: '1em', color: '#bbb', marginTop: '0.5em'}}>
                   {item.definition}
                 </div>
               )}
@@ -299,8 +312,16 @@ function App() {
   const renderWikiDict = (dict) => {
     if (!dict || typeof dict !== "object") return null
     return (
-      <div style={{maxWidth: 800, margin: "2em auto", background: "#222e", borderRadius: 10, color: "#fff", padding: 24}}>
-        <h3>Wiki Dictionary</h3>
+      <div style={{
+        maxWidth: 800,
+        margin: "2em auto",
+        background: "#23272f",
+        borderRadius: 18,
+        color: "#fff",
+        padding: 24,
+        boxShadow: '0 4px 16px #0004'
+      }}>
+        <h3 style={{marginBottom: 16, fontWeight: 600}}>Wiki Dictionary</h3>
         <ul style={{columns: 2, fontSize: "1em", listStyle: "none", padding: 0}}>
           {Object.entries(dict).map(([term, def]) => (
             <li key={term} style={{marginBottom: 12}}>
@@ -316,8 +337,16 @@ function App() {
   const renderWikiResults = (data) => {
     if (!Array.isArray(data)) return null
     return (
-      <div style={{maxWidth: 800, margin: "2em auto", background: "#222e", borderRadius: 10, color: "#fff", padding: 24}}>
-        <h3>Wiki Search Results</h3>
+      <div style={{
+        maxWidth: 800,
+        margin: "2em auto",
+        background: "#23272f",
+        borderRadius: 18,
+        color: "#fff",
+        padding: 24,
+        boxShadow: '0 4px 16px #0004'
+      }}>
+        <h3 style={{marginBottom: 16, fontWeight: 600}}>Wiki Search Results</h3>
         <ul style={{fontSize: "1em", listStyle: "none", padding: 0}}>
           {data.map((item, idx) => (
             <li key={item.id || idx} style={{marginBottom: 18}}>
@@ -330,21 +359,39 @@ function App() {
     )
   }
 
-  // Input style
-  const inputStyle = {
-    padding: '0.5em 1em',
-    borderRadius: '6px',
-    border: '1px solid #444',
-    fontSize: '1em',
-    minWidth: '180px'
+  // Android-like input style
+  const androidInputStyle = {
+    padding: '0.7em 1.1em',
+    borderRadius: '12px',
+    border: 'none',
+    background: '#23272f',
+    color: '#fff',
+    fontSize: '1.08em',
+    minWidth: '180px',
+    marginBottom: 4,
+    boxShadow: '0 2px 8px #0002',
+    outline: 'none'
   }
 
   // --- HEADER BACKGROUND LOGIC ---
-  // Only show a header image for homepage/onfire/user/filter/search/code/wiki/wikidict
-  // Use generalHeaderBg for non-wiki, wikiHeaderBg for wiki endpoints
   const isWiki = endpoint === "wiki" || endpoint === "wikidict"
   const showHeader = endpoint === "homepage" || endpoint === "onfire" || endpoint === "user" || endpoint === "filter" || endpoint === "search" || endpoint === "code" || isWiki
   const headerBg = isWiki ? wikiHeaderBg : generalHeaderBg
+
+  // Android app bar style
+  const appBarStyle = {
+    width: '100%',
+    minHeight: 56,
+    background: '#23272f',
+    color: '#fff',
+    display: 'flex',
+    alignItems: 'center',
+    boxShadow: '0 2px 8px #0003',
+    position: 'sticky',
+    top: 0,
+    zIndex: 10,
+    padding: '0 1em'
+  }
 
   return (
     <div
@@ -354,71 +401,95 @@ function App() {
         backgroundSize: 'auto',
         padding: 0,
         margin: 0,
+        fontFamily: 'Roboto, Arial, sans-serif'
       }}
     >
+      {/* Android App Bar */}
+      <div style={appBarStyle}>
+        <button
+          onClick={handleLogoClick}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            marginRight: 16,
+            outline: 'none'
+          }}
+          aria-label="Go to homepage"
+        >
+          <img
+            src="https://workshop.codes/assets/logo-small-1327ac6757dbbc86f702bf803fb4100119f0bab88b10c25a1148b59664d7704d.svg"
+            className="logo"
+            alt="Workshop.codes logo"
+            style={{height: '40px'}}
+          />
+        </button>
+        <span style={{fontWeight: 700, fontSize: '1.25em', letterSpacing: 0.5}}>
+          Workshop.codes
+        </span>
+      </div>
       {/* Top angled header */}
       {showHeader && (
         <div
           style={{
             width: '100%',
-            minHeight: 220,
+            minHeight: 180,
             backgroundImage: `url(${headerBg})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             clipPath: 'polygon(0 0, 100% 0, 100% 80%, 0 100%)',
             position: 'relative',
             zIndex: 1,
+            marginBottom: 0
           }}
         >
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            paddingTop: 32,
-            paddingBottom: 32,
-          }}>
-            <button
-              onClick={handleLogoClick}
-              style={{
-                background: 'none',
+          <form
+            onSubmit={handleSearch}
+            style={{
+              marginTop: 0,
+              display: 'flex',
+              gap: '0.5em',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingTop: 32
+            }}
+          >
+            <select value={endpoint} onChange={e => setEndpoint(e.target.value)} style={androidInputStyle}>
+              {ENDPOINTS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            </select>
+            {renderInputs()}
+            {(endpoint !== "homepage" && endpoint !== "onfire" && endpoint !== "wikidict") && (
+              <button type="submit" style={{
+                padding: '0.7em 1.4em',
+                borderRadius: '12px',
                 border: 'none',
+                background: '#4fd1c5',
+                color: '#23272f',
+                fontWeight: 'bold',
+                fontSize: '1.08em',
                 cursor: 'pointer',
-                padding: 0,
-                margin: 0,
-                outline: 'none'
-              }}
-              aria-label="Go to homepage"
-            >
-              <img
-                src="https://workshop.codes/assets/logo-small-1327ac6757dbbc86f702bf803fb4100119f0bab88b10c25a1148b59664d7704d.svg"
-                className="logo"
-                alt="Workshop.codes logo"
-                style={{height: '64px'}}
-              />
-            </button>
-            <form onSubmit={handleSearch} style={{marginTop: '1em', display: 'flex', gap: '0.5em', flexWrap: 'wrap', justifyContent: 'center'}}>
-              <select value={endpoint} onChange={e => setEndpoint(e.target.value)} style={inputStyle}>
-                {ENDPOINTS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-              </select>
-              {renderInputs()}
-              {(endpoint !== "homepage" && endpoint !== "onfire" && endpoint !== "wikidict") && (
-                <button type="submit" style={{
-                  padding: '0.5em 1.2em',
-                  borderRadius: '6px',
-                  border: 'none',
-                  background: '#4fd1c5',
-                  color: '#222',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}>Fetch</button>
-              )}
-            </form>
-          </div>
+                boxShadow: '0 2px 8px #0002'
+              }}>Fetch</button>
+            )}
+          </form>
         </div>
       )}
       {/* Main content */}
-      <div style={{maxWidth: 1400, margin: '0 auto', padding: '2em 1em 0 1em'}}>
-        <h2 style={{color: "#fff", textShadow: "0 2px 8px #000a", textAlign: 'center'}}>
+      <div style={{
+        maxWidth: 500,
+        margin: '0 auto',
+        padding: '1.5em 0.5em 0 0.5em'
+      }}>
+        <h2 style={{
+          color: "#fff",
+          textShadow: "0 2px 8px #000a",
+          textAlign: 'center',
+          fontWeight: 700,
+          fontSize: '1.3em',
+          marginBottom: 16
+        }}>
           {{
             homepage: "Workshop.codes Homepage",
             onfire: "On Fire",
@@ -437,34 +508,41 @@ function App() {
         {endpoint === "wikidict" && wikiDict && renderWikiDict(wikiDict)}
         {/* Pagination */}
         {(endpoint === "search" || endpoint === "user" || endpoint === "filter") && results && (
-          <div style={{display: 'flex', justifyContent: 'center', margin: '2em 0'}}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '2em 0',
+            gap: '1em'
+          }}>
             <button
               onClick={handlePrevPage}
               disabled={page <= 1}
               style={{
-                marginRight: '1em',
-                padding: '0.5em 1.2em',
-                borderRadius: '6px',
+                padding: '0.7em 1.4em',
+                borderRadius: '12px',
                 border: 'none',
                 background: page <= 1 ? '#444' : '#4fd1c5',
-                color: '#222',
+                color: '#23272f',
                 fontWeight: 'bold',
-                cursor: page <= 1 ? 'not-allowed' : 'pointer'
+                fontSize: '1.08em',
+                cursor: page <= 1 ? 'not-allowed' : 'pointer',
+                boxShadow: '0 2px 8px #0002'
               }}
             >Previous</button>
-            <span style={{color: '#fff', alignSelf: 'center'}}>Page {page}</span>
+            <span style={{color: '#fff', alignSelf: 'center', fontWeight: 600}}>Page {page}</span>
             <button
               onClick={handleNextPage}
               disabled={!hasMore}
               style={{
-                marginLeft: '1em',
-                padding: '0.5em 1.2em',
-                borderRadius: '6px',
+                padding: '0.7em 1.4em',
+                borderRadius: '12px',
                 border: 'none',
                 background: !hasMore ? '#444' : '#4fd1c5',
-                color: '#222',
+                color: '#23272f',
                 fontWeight: 'bold',
-                cursor: !hasMore ? 'not-allowed' : 'pointer'
+                fontSize: '1.08em',
+                cursor: !hasMore ? 'not-allowed' : 'pointer',
+                boxShadow: '0 2px 8px #0002'
               }}
             >Next</button>
           </div>
